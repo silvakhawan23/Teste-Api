@@ -22,7 +22,7 @@ public class Main {
         }
     }
 
-    public static String consultarCEP(String cep) {
+    public static String consultarCEP( String cep) {
         // URL base da API ViaCEP
         String urlBase = "https://viacep.com.br/ws/";
 
@@ -60,9 +60,9 @@ public class Main {
     }
     public static  String PegarBirro (String respostaJson){
      JsonObject jsonObject = JsonParser.parseString(respostaJson).getAsJsonObject();
-    String bairro = jsonObject.has("bairro") ? jsonObject.get("bairro").getAsString() : "Bairro não encontrado";
+     String bairro = jsonObject.has("bairro") ? jsonObject.getJSONObject("bairro").toString() : "Bairro não encontrado";
              return bairro ;
         }
-       
+    
         
     }
