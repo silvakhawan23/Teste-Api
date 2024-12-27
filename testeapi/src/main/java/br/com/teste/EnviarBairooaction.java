@@ -1,3 +1,9 @@
+import br.com.sankhya.jape.vo.DynamicVO;
+import br.com.sankhya.extensions.actionbutton.AcaoRotinaJava;
+import br.com.sankhya.extensions.actionbutton.ContextoAcao;
+import br.com.sankhya.extensions.actionbutton.Registro;
+import br.com.sankhya.jape.wrapper.JapeFactory;
+
 public class EnviarBairroaction implements AcaoRotinaJava {
     private EntityFacade dwfFacade;
 
@@ -14,10 +20,12 @@ public class EnviarBairroaction implements AcaoRotinaJava {
             String respostaJson = consultarCEP(cep);
             String bairro = PegarBirro(respostaJson);
             JapeWrapper Tela2DAO = JapeFactory.dao("AD_TELATESTE2");
+            tela2DAO.create()
+            .set("BAIRRO", bairro)
+            .save();
+         }
 
 
-       Registro[] registros = contexto.getLinhas();
-        for(Registro registro : registros){
-            DynamicVO cabVO = JapeFactory.dao(DynamicEntityNames.CABECALHO_NOTA).findByPK(registro.getCampo("NUNOTA"));
+         }
 
 }

@@ -12,8 +12,6 @@ public class Main {
 
         // Consulta o CEP e obtém a resposta JSON
         String respostaJson = consultarCEP(cep);
-        String bairro = PegarBirro(respostaJson);
-    
 
         if (respostaJson != null) {
             // Apenas imprime a resposta JSON completa
