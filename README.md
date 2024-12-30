@@ -1,18 +1,97 @@
 # Teste-Api
-  - Localizar a como é feito a integração
-  -   method = GET
-  -   Url base = "https://viacep.com.br/ws/"
-  -   Estruturar como seria a contrução da url, qual as informaões e as ordens que serao construidas para que seja feit a requisição.
-        *    URL url = new URL(urlBase + cep + "/json/");
-  -   Após determinar a estrutura, realizei um teste no site dos postman, após alguns teste e não consgui realizar o teste mas foi possivel confimar a requisção por aplicativo  android.  
-  -   Apenas colocando a url com ela formada
-  -   Resposta da API: {  "cep": "01001-000",  "logradouro": "Praça da Sé",  "complemento": "lado ímpar",  "unidade": "",  "bairro": "Sé",  "localidade": "São Paulo",  "uf": "SP",  "estado": "São Paulo",  "regiao": "Sudeste",  "ibge": "3550308",  "gia": "1004",  "ddd": "11",  "siafi": "7107"}
-  -   Foi ultilizado a classe consultarCEP(), responsavel por estruturar a url e realizar a requisição e retorna uma string com as informações .
-  -   Em seguida atraves da classe PegarBairro(), ela ira pegar a response gerado pela requisição, que foi tranformado em uma String, e transformar em um objeto json para pegar todos os objetos, e filtrar o objeto bairro e o dados presente nele.
 
-  -   Esta etapa, nos trouxe alguns desafios o primeiro erro foi
-       * used by: java.lang.nosuchmethoderror: com.google.gson.jsonparser.parsestring(ljava/lang/
-         -- Metodo que estava dando esse erro acima, pois estavamos usando o parsestring que nao era compativel com a versão do Gson do sankhya versao (mais nova do Gson usa) 
-         *  JsonObject jsonObject = JsonParser.parseString​(jsonString).getAsJsonObject();
-         -- Foi assim que chegou a conslusao de que para resolver isso bastava usar um metodo de tranformar uma string em um obejto Json com um versão (mais antiga do gson)
-          * JsonObject jsonObject = new JsonParser().parse(respostaJson).getAsJsonObject();
+Este repositório apresenta a integração com a API [ViaCEP](https://viacep.com.br/), incluindo os desafios encontrados e as soluções aplicadas durante o desenvolvimento.
+
+## Funcionalidades
+- Estruturação da URL para requisição à API.
+- Requisição de dados de CEP por meio do método `GET`.
+- Processamento da resposta da API para obter informações específicas, como o bairro.
+- Soluções para problemas de compatibilidade com versões de bibliotecas e codificação de caracteres.
+
+## Detalhes da Integração
+
+### URL Base e Estrutura da Requisição
+- **Método HTTP:** `GET`
+- **URL Base:** `https://viacep.com.br/ws/`
+- **Exemplo de construção da URL:**
+
+```java
+URL url = new URL(urlBase + cep + "/json/");
+```
+
+### Teste da API
+Os testes foram realizados inicialmente no [Postman](https://www.postman.com/), mas a validação final foi feita por meio de um aplicativo Android. Para obter a resposta da API, basta acessar a URL construída.
+
+### Exemplo de Resposta da API
+```json
+{
+  "cep": "01001-000",
+  "logradouro": "Praça da Sé",
+  "complemento": "lado ímpar",
+  "bairro": "Sé",
+  "localidade": "São Paulo",
+  "uf": "SP",
+  "estado": "São Paulo",
+  "regiao": "Sudeste",
+  "ibge": "3550308",
+  "gia": "1004",
+  "ddd": "11",
+  "siafi": "7107"
+}
+```
+
+## Estrutura do Código
+
+### Classe `ConsultarCEP`
+Responsável por:
+1. Construir a URL de requisição.
+2. Realizar a requisição e obter a resposta como uma string.
+3. Utilizar o `BufferedReader` com codificação UTF-8 para tratar corretamente os dados recebidos.
+
+Exemplo:
+```java
+BufferedReader reader = new BufferedReader(
+    new InputStreamReader(connection.getInputStream(), "UTF-8")
+);
+```
+
+### Classe `PegarBairro`
+- Recebe a resposta gerada pela requisição.
+- Converte a string em um objeto JSON.
+- Filtra o objeto JSON para obter o valor do campo `bairro`.
+
+Exemplo:
+```java
+JsonObject jsonObject = new JsonParser().parse(respostaJson).getAsJsonObject();
+String bairro = jsonObject.get("bairro").getAsString();
+```
+
+## Desafios e Soluções
+
+### Problema 1: Erro de Compatibilidade com a Biblioteca Gson
+- **Erro:** `java.lang.nosuchmethoderror: com.google.gson.jsonparser.parsestring`.
+- **Causa:** O método `parseString` não é compatível com a versão da biblioteca Gson utilizada no ambiente.
+- **Solução:** Substituir o uso de `parseString` pelo método de conversão disponível na versão antiga do Gson.
+
+```java
+JsonObject jsonObject = new JsonParser().parse(respostaJson).getAsJsonObject();
+```
+
+### Problema 2: Codificação UTF-8
+- **Erro:** Conflito ao salvar dados do tipo `String` devido ao uso de bytes para tratar o padrão UTF-8.
+- **Solução:** Configurar explicitamente a codificação UTF-8 ao processar a resposta da API.
+
+```java
+BufferedReader reader = new BufferedReader(
+    new InputStreamReader(connection.getInputStream(), "UTF-8")
+);
+```
+
+## Conclusão
+Este projeto demonstra a integração com a API ViaCEP e aborda os principais desafios técnicos enfrentados, como compatibilidade de bibliotecas e problemas de codificação de caracteres. As soluções apresentadas garantem uma integração funcional e confiável.
+
+---
+
+**Contribuições:** Sugestões e melhorias são bem-vindas. Por favor, envie um pull request ou abra uma issue.
+
+**Licença:** Este projeto está sob a licença MIT.
