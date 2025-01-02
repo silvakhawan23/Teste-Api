@@ -96,7 +96,7 @@ BufferedReader reader = new BufferedReader(
 
             if(bairroTela2VO != null){
              contextoAcao.setMensagemRetorno("Bairro ja cadastrado na tela de bairros");   
-            }else{
+            }else{}
   '''
 ## Conclusão
 Este projeto demonstra a integração com a API ViaCEP e aborda os principais desafios técnicos enfrentados, como compatibilidade de bibliotecas e problemas de codificação de caracteres. As soluções apresentadas garantem uma integração funcional e confiável.
