@@ -86,7 +86,18 @@ BufferedReader reader = new BufferedReader(
     new InputStreamReader(connection.getInputStream(), "UTF-8")
 );
 ```
+### Probelma 3: Conferir se bairro ja esta cadastrado ou não
+-**Erro:** Gera bairro repitido 
+-**Solução** ultilizar da comparação do findOne para certificar que tem os registro ja nao existe 
+'''java
 
+
+    DynamicVO bairroTela2VO = tela2DAO.findOne("BAIRRO = ?", bairro);
+
+            if(bairroTela2VO != null){
+             contextoAcao.setMensagemRetorno("Bairro ja cadastrado na tela de bairros");   
+            }else{
+  '''
 ## Conclusão
 Este projeto demonstra a integração com a API ViaCEP e aborda os principais desafios técnicos enfrentados, como compatibilidade de bibliotecas e problemas de codificação de caracteres. As soluções apresentadas garantem uma integração funcional e confiável.
 
