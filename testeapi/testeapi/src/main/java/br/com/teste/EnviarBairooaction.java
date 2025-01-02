@@ -29,9 +29,10 @@ public class EnviarBairooaction implements AcaoRotinaJava {
                 String respostaJson = consultarCEP(cep);
                 String bairro = PegarBairro(respostaJson);
 
-                  JapeWrapper tela2DAO = JapeFactory.dao("AD_TELATESTE2");
-            String bairro2 = tela2DAO.asString("BAIRRO");
-            if(bairro.equals(bairro2)){
+              JapeWrapper tela2DAO = JapeFactory.dao("AD_TELATESTE2");
+                DynamicVO bairroTela2VO = tela2DAO.findOne("BAIRRO = ?", bairro);
+
+            if(bairroTela2VO != null){
              contextoAcao.setMensagemRetorno("Bairro ja cadastrado na tela de bairros");   
             }else{
 
@@ -39,6 +40,10 @@ public class EnviarBairooaction implements AcaoRotinaJava {
             .set("BAIRRO", bairro)
             .save();
             contextoAcao.setMensagemRetorno("Bairro do  " + cep + "Registrado com Sucesso");
+               
+            }else{
+                 contextoAcao.setMensagemRetorno("Bairro ja cadastrado na tela de bairros");
+
             }
                 
             }
