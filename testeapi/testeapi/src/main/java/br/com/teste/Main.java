@@ -77,6 +77,20 @@ public class Main {
             }
 
     }
+    public static String mensagem (String cep,DynamicVO bairroTela2VO) { 
+
+        StringBuilder mensagem = new StringBuilder();
+        if(bairroTela2VO != null){
+            mensagem.append(cep ).append(" cep ja cadastrado");
+            mensage.append("<br>");
+             } 
+        else{ 
+        mensagem.append(cep).append( " novo cadastro");
+        mensagem.append("<br>");
+          }
+        return mensagem.toString() ;
+
+     }
 
 
 

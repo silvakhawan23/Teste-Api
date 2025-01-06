@@ -32,21 +32,17 @@ public class EnviarBairooaction implements AcaoRotinaJava {
               JapeWrapper tela2DAO = JapeFactory.dao("AD_TELATESTE2");
                 DynamicVO bairroTela2VO = tela2DAO.findOne("BAIRRO = ?", bairro);
 
-            if(bairroTela2VO != null){
-             contextoAcao.setMensagemRetorno("Bairro ja cadastrado na tela de bairros");   
-            }else{
-
-            tela2DAO.create()
+            if(bairroTela2VO == null){
+                tela2DAO.create()
             .set("BAIRRO", bairro)
             .save();
             contextoAcao.setMensagemRetorno("Bairro do  " + cep + "Registrado com Sucesso");
-               
-            }else{
-                 contextoAcao.setMensagemRetorno("Bairro ja cadastrado na tela de bairros");
-
-            }
                 
             }
+            String mensagemCompleta = mensagemCompleta + mensagem(cep,bairroTela2VO);
+                
+            }
+           contextoAcao.info(mensagemCompleta);
         } catch (Exception e) {
             contextoAcao.mostraErro("Erro no processo: " + e.getMessage());
 
